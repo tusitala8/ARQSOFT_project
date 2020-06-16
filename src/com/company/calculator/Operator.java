@@ -1,8 +1,9 @@
 package com.company.calculator;
 
-public abstract class Operator {
-    public abstract int getPrecedence();
-    abstract double operate(double number1, double number2);
+interface Operator {
+    int getPrecedence();
+    String getIdentifier();
+    double calculate(double num1, double num2);
 }
 
 
