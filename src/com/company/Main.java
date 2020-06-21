@@ -3,21 +3,19 @@ package com.company;
 import com.company.calculator.Calculator;
 import com.company.calculator.InvalidOperator;
 import com.company.function.PreProcessor;
+import com.company.spreadsheet.Spreadsheet;
 
 
 class Arqsoft {
 
     public static void main(String []args){
-       try {
-            Calculator calc = new Calculator();
-            System.out.println(calc.calculate("4*(20min30)/2-3"));
-
-            PreProcessor preProc = new PreProcessor();
-            System.out.println(calc.calculate(preProc.toOperations("3+1*((SUM(2;5;AVERAGE(6;8);1;27)/4)+(6-8))")));
-        } catch (InvalidOperator e) {
-            System.out.println("invalid operator");
-        }
-
+        Spreadsheet spr = new Spreadsheet(5, 5);
+        spr.updateCell(0,0, "2");
+        spr.updateCell(1,0, "3");
+        spr.updateCell(0,1, "4");
+        spr.updateCell(1,1, "5");
+        spr.updateCell(2,0,"=AVERAGE(A1:B1;3;3;1)");
+        spr.printMatrix();
     }
 
 }

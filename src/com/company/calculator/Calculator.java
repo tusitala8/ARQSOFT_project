@@ -25,16 +25,16 @@ public class Calculator {
     Pattern isNumberPattern;
     List<Operator> operators;
 
-    String numberRegex() {
+    String numberRegex() { //regex per detectar numeros
         return "\\d+(\\.\\d+)?";
     }
 
 
-    String getTokensRegex() {
+    String getTokensRegex() { //crea una expresio regex
         List<String> regex = this.operators.stream()
                 .map(Operator::getIdentifier)
                 .map(n -> this.scopeRegexToken(n))
-                .collect(toList());
+                .collect(toList());  //array de simbolets
         regex.add(this.numberRegex());
         regex.add("\\(");
         regex.add("\\)");
@@ -42,7 +42,7 @@ public class Calculator {
     }
 
     String scopeRegexToken(String token) {
-        String[] regexCharacters = {"+","-","*","/","?","$","^"};
+        String[] regexCharacters = {"+","-","*","/"};
         if(Arrays.asList(regexCharacters).contains(token)) {
             return "\\".concat(token);
         }
@@ -50,7 +50,10 @@ public class Calculator {
     }
 
     public double calculate(String formula) throws InvalidOperator{
-        return this.operatePostfix(this.toPostfix(this.parse(formula)));
+        List<String> formulatrossets = this.parse(formula);
+        List<String> formulaAmbPostFix = this.toPostfix(formulatrossets);
+        double resultatFormula = this.operatePostfix(formulaAmbPostFix);
+        return resultatFormula;
     }
 
     List<String> parse(String formula) {
@@ -74,30 +77,33 @@ public class Calculator {
 
     List<String> toPostfix(List<String> tokenizedFormula) throws InvalidOperator{
         OperatorStack stack = new OperatorStack(this.operators);
-        List<String> result = new ArrayList<String>();
+        List<String> cua = new ArrayList<String>();
 
         for(String token: tokenizedFormula) {
             if(this.isNumber(token)) {
-                result.add(token);
+                cua.add(token);
             } else {
-                result.addAll(stack.push(token));
+                List<String> operacionsExpulsadesDelPush = stack.push(token);
+                cua.addAll(operacionsExpulsadesDelPush);
             }
         }
 
-        result.addAll(stack.popAll());
-        return result;
+        cua.addAll(stack.popAll());
+        return cua;
     }
 
     double operatePostfix(List<String> postfixFormula) throws InvalidOperator{
         Deque<Double> numbers = new ArrayDeque<Double>();
 
-        for(String token: postfixFormula) {
-            if(this.isNumber(token)) {
-                numbers.push(Double.parseDouble(token));
+        for(String trosDeFormula: postfixFormula) {
+            if(this.isNumber(trosDeFormula)) {
+                numbers.push(Double.parseDouble(trosDeFormula));
             } else {
+                String simbolet=trosDeFormula;
                 Double num2 = numbers.pop();
                 Double num1 = numbers.pop();
-                numbers.push(this.operate(num1, num2, token));
+                Double resultatOperacio=this.operate(num1, num2, simbolet);
+                numbers.push(resultatOperacio);
             }
         }
 

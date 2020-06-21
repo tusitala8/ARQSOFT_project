@@ -13,11 +13,13 @@ class OperatorStack {
     Deque<String> operators;
     List<Operator> operatorsType;
 
+
+    //+,-,/,*,max,),+
     public List<String> push(String operator) throws InvalidOperator{
         List<String> result = new ArrayList<String>();
 
         if(this.operators.isEmpty()) {
-            this.operators.push(operator);  //Explicar
+            this.operators.push(operator);  //primer push + //segon puch dins de la funcio cridada operator=-
             return result;
         }
 
@@ -40,8 +42,8 @@ class OperatorStack {
         }
 
         if(this.getPrecedence(operator) <= this.getPrecedence(lastOperator)) {
-            result.add(this.operators.pop());
-            result.addAll(this.push(operator));
+            result.add(this.operators.pop());  //1)segon push -  2)fas pop del + i l'afegeixes a result
+            result.addAll(this.push(operator)); //tornes a cridar el push(funcio gran)
             return result;
         }
 
@@ -54,7 +56,7 @@ class OperatorStack {
 
     }
 
-    public int getPrecedence(String operatorId) throws InvalidOperator {
+    int getPrecedence(String operatorId) throws InvalidOperator {
         if(operatorId.equals("(")) { //Explicar
             return 1;
         }

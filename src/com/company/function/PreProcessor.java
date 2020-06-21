@@ -43,10 +43,10 @@ public class PreProcessor {
         return String.join("|",regex);
     }
         //Primero entender GroupFinder
-            String process(List<String> tokens) {
+    String process(List<String> tokens) {
         GroupFinder finder = new GroupFinder();
 
-        for(String token: tokens) {
+        for(String token: tokens) { //tokens es l'array de trossos de formula, i token cada tros
             List<String> tokenGroup = finder.findGroup(token);
             if(!tokenGroup.isEmpty()) {
                 for(String resultToken: this.transform(tokenGroup)) {
@@ -63,14 +63,15 @@ public class PreProcessor {
         if(tokens.size()<2) {
             return result;
         }
-        String operation = tokens.get(0);
+        String operation = tokens.get(0);  //troba el primer component de la llista tokens
+                                            // i d'aqui escull quin transform fer
 
         //preguntar
         TransformFunction function = this.loadFunctions.stream()
                 .filter(func -> func.getIdentifier().equals(operation))
                 .findAny()
                 .orElse(null);
-        if(function == null) {
+        if(function == null) { //en el cas (, no hi ha cap transform per tant es null
             return this.mapBrackets(tokens);
         } else {
             tokens.remove(0);
@@ -91,13 +92,12 @@ public class PreProcessor {
         return tokens;
     }
 
-    List<String> tokenize(String formula) {
+    List<String> tokenize(String formula) { //fa el mateix que el parse, talla una formula a trossets
         List<String> result = new ArrayList<String>();
 
         Matcher m = this.tokenPattern.matcher(formula);
 
         while(m.find()) {
-         String hola=m.group(0);
             result.add(m.group(0));
         }
         return result;
