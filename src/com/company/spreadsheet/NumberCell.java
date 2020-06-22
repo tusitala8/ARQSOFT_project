@@ -1,6 +1,5 @@
 package com.company.spreadsheet;
 
-
 public class NumberCell extends BaseCell {
     public NumberCell(String value) {
         this.value = value;
@@ -12,4 +11,10 @@ public class NumberCell extends BaseCell {
     public String getValue() {
         return value;
     }
+
+    @Override
+    public String getSpreadsheetValue() {
+        return value;
+    }
+
 }

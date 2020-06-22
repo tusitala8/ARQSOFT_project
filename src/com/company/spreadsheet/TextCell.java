@@ -11,4 +11,8 @@ public class TextCell extends BaseCell {
     public String getValue() {
         return value;
     }
+
+    public String getSpreadsheetValue() {
+        return value;
+    }
 }

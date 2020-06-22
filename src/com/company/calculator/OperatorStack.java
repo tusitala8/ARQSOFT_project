@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
+
 class OperatorStack {
     public OperatorStack(List<Operator> operatorsType) {
         this.operators = new ArrayDeque<String>();
@@ -19,7 +20,7 @@ class OperatorStack {
         List<String> result = new ArrayList<String>();
 
         if(this.operators.isEmpty()) {
-            this.operators.push(operator);  //primer push + //segon puch dins de la funcio cridada operator=-
+            this.operators.push(operator);  //primer push + //segon push dins de la funcio cridada operator=-
             return result;
         }
 
@@ -68,7 +69,7 @@ class OperatorStack {
         }
     }
 
-    Operator findOperator(String identifier) {
+    public Operator findOperator(String identifier) {
         return this.operatorsType.stream()
                 .filter(func -> func.getIdentifier().equals(identifier))
                 .findAny()

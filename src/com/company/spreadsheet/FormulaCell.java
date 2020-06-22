@@ -29,16 +29,22 @@ public class FormulaCell extends BaseCell {
     }
 
     public void update(String cellId) {
-        if(formula.contains(cellId)) {
+        if (formula.contains(cellId)) {
             this.resultat = this.calculate();
         }
     }
 
     @Override
     public String getValue() {
-        if(this.resultat == null) {
+        if (this.resultat == null) {
             this.resultat = this.calculate();
         }
         return this.calculate();
     }
+
+    @Override
+    public String getSpreadsheetValue() {
+        return "=" + formula.replaceAll(";", ",");
+    }
+
 }
