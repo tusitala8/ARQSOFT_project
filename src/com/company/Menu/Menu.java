@@ -34,6 +34,7 @@ public class Menu {
                 switch (opcion) {
 
                     case 1 -> {
+                        System.out.println("Dialog box can be minimized on your taskbar. Check it!");
 
                         FileDialog dialog = new FileDialog((Frame) null, "Select File to Open");
                         dialog.setMode(FileDialog.LOAD);
@@ -69,6 +70,7 @@ public class Menu {
                     }
 
                     case 3 -> {
+                        System.out.println("Dialog box can be minimized on your taskbar. Check it!");
 
                         FileDialog dialog = new FileDialog((Frame) null, "Select File to Open");
                         dialog.setMode(FileDialog.SAVE);
@@ -80,7 +82,9 @@ public class Menu {
 
                     }
 
-                    case 4 -> this.salir = true;
+                    case 4 -> {
+                        this.salir = true;
+                    }
                     default -> System.out.println("Valid options between 1 and 4");
 
                 }
@@ -89,7 +93,7 @@ public class Menu {
             System.out.println(e.getMessage());
             showMenu();
         }
-
+        System.exit(0);
     }
 }
 

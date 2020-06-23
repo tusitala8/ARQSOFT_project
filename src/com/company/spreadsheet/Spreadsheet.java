@@ -6,6 +6,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Spreadsheet {
+
+    List<List<BaseCell>> matrixCell;
+    Pattern isNumberPattern;
+    Pattern cellIdPattern;
+    Integer minCellLength = 51;
+
     public Spreadsheet(int width, int height) {
         this.matrixCell = new ArrayList<>();
         for (int x = 0; x < width; x++) {
@@ -18,10 +24,6 @@ public class Spreadsheet {
         this.isNumberPattern = Pattern.compile("\\d+(\\.\\d+)?");
         this.cellIdPattern = Pattern.compile("[A-z]\\d(:)?([A-z]\\d)?");
     }
-
-    List<List<BaseCell>> matrixCell;
-    Pattern isNumberPattern;
-    Pattern cellIdPattern;
 
     boolean isNumber(String operator) {
         if (operator == null) {
@@ -91,18 +93,6 @@ public class Spreadsheet {
         return formula;
     }
 
-    String cellIdFromCoords(int x, int y) {
-        return String.valueOf((char) (y + 96)) + String.valueOf(x + 1);
-    }
-
-    void notifyCellChanged(String cellId) {
-        for (List<BaseCell> cells : this.matrixCell) {
-            for (BaseCell cell : cells) {
-                cell.updateCell(cellId);
-            }
-        }
-    }
-
     public void updateCell(int x, int y, String value) {
         BaseCell cell;
         if (value.startsWith("=")) {
@@ -113,26 +103,34 @@ public class Spreadsheet {
             cell = new TextCell(value);
         }
         this.matrixCell.get(y).set(x, cell);
-        notifyCellChanged(this.cellIdFromCoords(x, y));
     }
 
     public void printMatrix() {
-        System.out.println("------------".repeat(this.matrixCell.size()));
+        System.out.print(" ".repeat(4));
+        System.out.print("|");
         for (int x = 0; x < this.matrixCell.size(); x++) {
             System.out.print(String.valueOf((char) (x + 97)));
             System.out.print(" ".repeat(50));
             System.out.print("|");
         }
         System.out.println("");
-        System.out.println("------------------------------------------------------------------".repeat(this.matrixCell.size()));
+        System.out.print("-".repeat(5));
+        System.out.print("-".repeat((minCellLength+1)*this.matrixCell.size()));
         System.out.println("");
+        int row_no = 1;
         for (List<BaseCell> cells : this.matrixCell) {
+            System.out.print(String.format("%4d", row_no));
+            System.out.print("|");
+
+            row_no ++;
             for (BaseCell cell : cells) {
                 String value = cell.getValue();
-                int padding = 51 - value.length();
+                int padding = minCellLength - value.length();
 
                 if (cell instanceof FormulaCell) {
-                    System.out.print(cell.getSpreadsheetValue() + "       " + cell.getValue());
+                    padding = minCellLength - (cell.getSpreadsheetValue() + cell.getValue()).length();
+                    String formValueSpace =  padding > 7 ? " ".repeat(padding) : " ".repeat(7);
+                    System.out.print(cell.getSpreadsheetValue() + formValueSpace + cell.getValue());
                 } else {
                     System.out.print(cell.getValue() + " ".repeat(padding));
                 }
@@ -140,7 +138,9 @@ public class Spreadsheet {
                 System.out.print("|");
             }
             System.out.println("");
-            System.out.println("------------------------------------------------------------------".repeat(this.matrixCell.size()));
+            System.out.print("-".repeat(5));
+            System.out.print("-".repeat((minCellLength+1)*this.matrixCell.size()));
+            System.out.println("");
         }
     }
 

@@ -7,6 +7,11 @@ import java.util.regex.Pattern;
 import static java.util.stream.Collectors.toList;
 
 public class Calculator {
+
+    Pattern pattern;
+    Pattern isNumberPattern;
+    List<Operator> operators;
+
     public Calculator() {
         this.operators = new ArrayList<Operator>();
         this.operators.add(new OperatorSum());
@@ -19,16 +24,9 @@ public class Calculator {
         this.isNumberPattern = Pattern.compile(this.numberRegex());
     }
 
-
-    String baseOperator;
-    Pattern pattern;
-    Pattern isNumberPattern;
-    List<Operator> operators;
-
     String numberRegex() { //regex per detectar numeros
         return "\\d+(\\.\\d+)?";
     }
-
 
     String getTokensRegex() { //crea una expresio regex
         List<String> regex = this.operators.stream()
